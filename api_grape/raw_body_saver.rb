@@ -11,7 +11,7 @@ class RawBodySaver
 
     def call(env)
       input = env['rack.input']
-      raw_body = input.respond_to?(:read) ? input.read : ''
+      raw_body = input.respond_to?(:read) ? input.read : nil
       env['raw.body'] = raw_body
       input.rewind if input.respond_to?(:rewind)
       @app.call(env)

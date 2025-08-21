@@ -16,9 +16,6 @@ class ParseAPI < Grape::API
       post :parse do
         begin
           raw_text = env['raw.body']
-          if raw_text.nil?
-            error!({ code: 400, message: "Request body is empty" }, 400)
-          end
           result = JSONParser.parse(raw_text)
           status 200
           result
