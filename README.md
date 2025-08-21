@@ -54,3 +54,13 @@ bundle exec rspec
 
 **Note:** This project is unable to use SimpleCov for test coverage reporting due to a known issue with `JSON.dump` in Ruby 3.4.5.  
 See: https://github.com/rubygems/rubygems/issues/8927
+
+## Run the Sinatra API
+
+Start the Sinatra-based API server:
+
+```sh
+rackup api_sinatra/config.ru
+```
+
+The API will be available at [http://localhost:4567](http://localhost:4567) by default.

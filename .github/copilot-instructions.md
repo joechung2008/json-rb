@@ -17,6 +17,9 @@ This guide provides essential knowledge for AI coding agents working in the `jso
   - `bundle install`
 - **Run CLI:**
   - `ruby bin/cli`
+- **Run Sinatra API:**
+  - `rackup api_sinatra/config.ru`
+  - The API will be available at http://localhost:4567 by default.
 - **Lint and format:**
   - Lint: `bundle exec rubocop`
   - Auto-format: `bundle exec rubocop -x`

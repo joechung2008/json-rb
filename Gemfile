@@ -2,6 +2,8 @@
 
 source "https://rubygems.org"
 
+gem 'sinatra'
+
 # For testing
 group :development, :test do
   gem "rspec"
