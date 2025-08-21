@@ -22,7 +22,7 @@ class App < Roda
         else
           response.status = 415
           response['Content-Type'] = 'application/json'
-          { error: "Unsupported Media Type" }
+          { code: 415, error: "Unsupported Media Type" }
         end
       end
     end
