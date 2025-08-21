@@ -19,13 +19,9 @@ class ParseAPI < Grape::API
           if raw_text.nil?
             error!({ code: 400, message: "Request body is empty" }, 400)
           end
-          result = JSON.parse(raw_text)
+          result = JSONParser.parse(raw_text)
           status 200
-          if result.nil? || result == false
-            result
-          else
-            present result
-          end
+          result
         rescue SyntaxError => e
           error!({ code: 400, message: e.message }, 400)
         end
