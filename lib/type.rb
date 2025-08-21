@@ -1,4 +1,4 @@
-module JSON
+module JSONParser
   module Type
     UNKNOWN = 0
     ARRAY = 1

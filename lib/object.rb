@@ -1,7 +1,7 @@
 require_relative "pair"
 require_relative "type"
 
-module JSON
+module JSONParser
   module Object
     module Mode
       SCANNING = 0
@@ -13,7 +13,7 @@ module JSON
     def parse(object)
       mode = Mode::SCANNING
       pos = 0
-      token = { type: JSON::Type::OBJECT, members: [] }
+      token = { type: JSONParser::Type::OBJECT, members: [] }
 
       while pos < object.length and mode != Mode::STOP
         ch = object[pos]
@@ -40,7 +40,7 @@ module JSON
             mode = Mode::STOP
           else
             slice = object[pos..-1]
-            skip, pair = JSON::Pair.parse(slice, /[\s,\}]/).values_at(:skip, :token)
+            skip, pair = JSONParser::Pair.parse(slice, /[\s,\}]/).values_at(:skip, :token)
             token[:members].push(pair)
             pos += skip
             mode = Mode::DELIMITER

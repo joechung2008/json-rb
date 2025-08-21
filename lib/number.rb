@@ -1,6 +1,6 @@
 require_relative "type"
 
-module JSON
+module JSONParser
   module Number
     module Mode
       SCANNING = 0
@@ -18,7 +18,7 @@ module JSON
     def parse(number, delimiters = nil)
       mode = Mode::SCANNING
       pos = 0
-      token = { type: JSON::Type::NUMBER, value: nil, value_as_string: nil }
+      token = { type: JSONParser::Type::NUMBER, value: nil, value_as_string: nil }
 
       while pos < number.length and mode != Mode::STOP
         ch = number[pos]

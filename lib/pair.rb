@@ -2,7 +2,7 @@ require_relative "string"
 require_relative "type"
 require_relative "value"
 
-module JSON
+module JSONParser
   module Pair
     module Mode
       SCANNING = 0
@@ -15,7 +15,7 @@ module JSON
     def parse(pair, delimiters = nil)
       mode = Mode::SCANNING
       pos = 0
-      token = { type: JSON::Type::PAIR, key: nil, value: nil }
+      token = { type: JSONParser::Type::PAIR, key: nil, value: nil }
 
       while pos < pair.length and mode != Mode::STOP
         ch = pair[pos]
@@ -29,7 +29,7 @@ module JSON
           end
         when Mode::KEY
           slice = pair[pos..-1]
-          skip, key = JSON::String.parse(slice).values_at(:skip, :token)
+          skip, key = JSONParser::String.parse(slice).values_at(:skip, :token)
           token[:key] = key
           pos += skip
           mode = Mode::COLON
@@ -44,7 +44,7 @@ module JSON
           end
         when Mode::VALUE
           slice = pair[pos..-1]
-          skip, value = JSON::Value.parse(slice, delimiters).values_at(:skip, :token)
+          skip, value = JSONParser::Value.parse(slice, delimiters).values_at(:skip, :token)
           token[:value] = value
           pos += skip
           mode = Mode::STOP

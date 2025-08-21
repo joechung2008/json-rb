@@ -1,7 +1,7 @@
 require_relative "type"
 require_relative "value"
 
-module JSON
+module JSONParser
   module Array
     module Mode
       SCANNING = 0
@@ -13,7 +13,7 @@ module JSON
     def parse(array)
       mode = Mode::SCANNING
       pos = 0
-      token = { type: JSON::Type::ARRAY, value: [] }
+      token = { type: JSONParser::Type::ARRAY, value: [] }
 
       while pos < array.length and mode != Mode::STOP
         ch = array[pos]
@@ -38,7 +38,7 @@ module JSON
             mode = Mode::STOP
           else
             slice = array[pos..-1]
-            skip, value = JSON::Value.parse(slice, /[,\]\s]/).values_at(:skip, :token)
+            skip, value = JSONParser::Value.parse(slice, /[,\]\s]/).values_at(:skip, :token)
             token[:value].push(value)
             pos += skip
             mode = Mode::DELIMITER

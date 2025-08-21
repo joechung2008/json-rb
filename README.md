@@ -60,10 +60,20 @@ See: https://github.com/rubygems/rubygems/issues/8927
 Start the Sinatra-based API server:
 
 ```sh
-rackup api_sinatra/config.ru -p 8000
+rackup api_sinatra/config.ru -p 8000 -s webrick
 ```
 
 The API will be available at [http://localhost:8000](http://localhost:8000) by default.
+
+## Run the Roda API
+
+Start the Roda-based API server:
+
+```sh
+rackup api_roda/config.ru -p 8001 -s webrick
+```
+
+The API will be available at [http://localhost:8001](http://localhost:8001) by default.
 
 ## Test API endpoints with REST Client (VS Code Extension)
 

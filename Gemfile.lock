@@ -26,6 +26,8 @@ GEM
       rack (>= 3.0.0)
     rainbow (3.1.1)
     regexp_parser (2.11.2)
+    roda (3.95.0)
+      rack
     rspec (3.13.1)
       rspec-core (~> 3.13.0)
       rspec-expectations (~> 3.13.0)
@@ -75,6 +77,7 @@ PLATFORMS
   x64-mingw-ucrt
 
 DEPENDENCIES
+  roda (~> 3.95)
   rspec
   rubocop
   rubocop-rspec

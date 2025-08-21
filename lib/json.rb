@@ -1,6 +1,6 @@
 require_relative "value"
 
-module JSON
+module JSONParser
   module Mode
     SCANNING = 0
     VALUE = 1
@@ -23,7 +23,7 @@ module JSON
         end
       when Mode::VALUE
         slice = json[pos..-1]
-        skip, token = JSON::Value.parse(slice).values_at(:skip, :token)
+        skip, token = JSONParser::Value.parse(slice).values_at(:skip, :token)
         pos += skip
         mode = Mode::STOP
       when Mode::STOP

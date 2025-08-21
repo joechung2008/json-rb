@@ -15,3 +15,5 @@ end
 group :development do
   gem "rubocop", require: false
 end
+
+gem "roda", "~> 3.95"

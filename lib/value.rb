@@ -4,7 +4,7 @@ require_relative "object"
 require_relative "string"
 require_relative "type"
 
-module JSON
+module JSONParser
   module Value
     module Mode
       SCANNING = 0
@@ -50,13 +50,13 @@ module JSON
           end
         when Mode::ARRAY
           slice = value[pos..-1]
-          skip, token = JSON::Array.parse(slice).values_at(:skip, :token)
+          skip, token = JSONParser::Array.parse(slice).values_at(:skip, :token)
           pos += skip
           mode = Mode::STOP
         when Mode::FALSE
           slice = value[pos..-1]
           if /^false/i.match?(slice)
-            token = { type: JSON::Type::FALSE, value: false }
+            token = { type: JSONParser::Type::FALSE, value: false }
             pos += 5
             mode = Mode::STOP
           else
@@ -65,7 +65,7 @@ module JSON
         when Mode::NULL
           slice = value[pos..-1]
           if /^null/i.match?(slice)
-            token = { type: JSON::Type::NULL, value: nil }
+            token = { type: JSONParser::Type::NULL, value: nil }
             pos += 4
             mode = Mode::STOP
           else
@@ -73,23 +73,23 @@ module JSON
           end
         when Mode::NUMBER
           slice = value[pos..-1]
-          skip, token = JSON::Number.parse(slice, delimiters.nil? ? /\s/ : delimiters).values_at(:skip, :token)
+          skip, token = JSONParser::Number.parse(slice, delimiters.nil? ? /\s/ : delimiters).values_at(:skip, :token)
           pos += skip
           mode = Mode::STOP
         when Mode::OBJECT
           slice = value[pos..-1]
-          skip, token = JSON::Object.parse(slice).values_at(:skip, :token)
+          skip, token = JSONParser::Object.parse(slice).values_at(:skip, :token)
           pos += skip
           mode = Mode::STOP
         when Mode::STRING
           slice = value[pos..-1]
-          skip, token = JSON::String.parse(slice).values_at(:skip, :token)
+          skip, token = JSONParser::String.parse(slice).values_at(:skip, :token)
           pos += skip
           mode = Mode::STOP
         when Mode::TRUE
           slice = value[pos..-1]
           if /^true/i.match?(slice)
-            token = { type: JSON::Type::TRUE, value: true }
+            token = { type: JSONParser::Type::TRUE, value: true }
             pos += 4
             mode = Mode::STOP
           else
