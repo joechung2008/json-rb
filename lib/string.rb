@@ -66,7 +66,7 @@ module JSON
             raise SyntaxError, "unexpected escape character '#{ch}'"
           end
         when Mode::UNICODE
-          slice = string[pos..pos + 4]
+          slice = string[pos..(pos + 4)]
           begin
             hex = Integer("0x#{slice}")
           rescue ArgumentError
