@@ -2,7 +2,7 @@
 
 source "https://rubygems.org"
 
-gem "grape", "~> 2.4"
+gem "grape", "2.3.0"
 gem "roda", "~> 3.95"
 gem "sinatra", "~> 4.1"
 gem "webrick", "~> 1.9"
