@@ -1,4 +1,4 @@
-require_relative "PAIR"
+require_relative "pair"
 require_relative "type"
 
 module JSON
