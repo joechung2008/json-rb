@@ -25,6 +25,7 @@
 - **Lint/Format:** `bundle exec rubocop` and `bundle exec rubocop -x` (see `.rubocop.yml` for custom rules)
 - **Run API server:** `rackup api_sinatra/config.ru -p 8000 -s webrick` (Sinatra, port 8000)
 - **Run Roda API server:** `rackup api_roda/config.ru -p 8000 -s webrick` (Roda, port 8000)
+- **Run Grape API server:** `rackup api_grape/config.ru -p 8000 -s webrick` (Grape, port 8000)
 - **Test API endpoints:** Use `.rest` files in `testdata/` with VS Code REST Client extension.
 
 ### Project-Specific Conventions
