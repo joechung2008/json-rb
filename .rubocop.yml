@@ -1,6 +1,6 @@
 # RuboCop configuration file
 
-require:
+plugins:
   - rubocop-rspec
 
 AllCops:

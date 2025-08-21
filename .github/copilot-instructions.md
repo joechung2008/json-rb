@@ -1,57 +1,61 @@
-# Copilot Instructions for json-rb
+// ...existing code...
 
-This guide provides essential knowledge for AI coding agents working in the `json-rb` Ruby project. Follow these conventions and workflows to be immediately productive.
+## AI Coding Agent Instructions for json-rb
 
-## Project Overview
+### Project Overview
 
-- **Purpose:** Ruby 3.4.5 port of a TypeScript JSON parser. See [json.org](http://json.org) for reference.
-- **Architecture:**
-  - Core parsing logic is split across `lib/` files: `json.rb`, `array.rb`, `object.rb`, `string.rb`, `number.rb`, `pair.rb`, `type.rb`, `value.rb`.
-  - Each file implements a distinct JSON type or parsing responsibility. For example, `array.rb` handles JSON arrays, `object.rb` handles objects, etc.
-  - The CLI entry point is `bin/cli`.
-- **Testing:** All specs are in `spec/` and use RSpec. Each core file has a corresponding spec file (e.g., `lib/array.rb` → `spec/array_spec.rb`).
+- This is a Ruby implementation of a JSON parser, ported from TypeScript. It includes a CLI, a Sinatra-based API, and a modular parser in `lib/`.
+- The parser is custom and does not use Ruby's built-in `JSON` for parsing; see `lib/json.rb` and related files for the core logic.
 
-## Developer Workflows
+### Architecture & Major Components
 
-- **Install dependencies:**
-  - `bundle install`
-- **Run CLI:**
-  - `ruby bin/cli`
-- **Run Sinatra API:**
-  - `rackup api_sinatra/config.ru`
-  - The API will be available at http://localhost:4567 by default.
-- **Lint and format:**
-  - Lint: `bundle exec rubocop`
-  - Auto-format: `bundle exec rubocop -x`
-- **Run tests:**
-  - `bundle exec rspec`
-  - Coverage reporting via SimpleCov is disabled due to Ruby 3.4.5 issues (see README).
+- **lib/**: Core parsing logic. Key modules: `json.rb`, `value.rb`, `array.rb`, `object.rb`, `string.rb`, `number.rb`, `pair.rb`, `type.rb`.
+  - Parsing is state-machine driven, with explicit modes for each JSON type.
+  - Each type (array, object, string, number, etc.) has its own module and parse method.
+- **bin/cli**: Command-line interface. Reads from STDIN, parses input, prints results.
+- **api_sinatra/**: Sinatra API exposing `/api/v1/parse` endpoint. Uses Ruby's built-in `JSON.parse` (not the custom parser) for requests.
+- **spec/**: RSpec tests for all parser components. Use as reference for expected behaviors and edge cases.
+- **testdata/**: Example REST requests for API testing (compatible with VS Code REST Client extension).
 
-## Project-Specific Conventions
+### Developer Workflows
 
-- **File structure:**
-  - Each JSON type is implemented in its own file under `lib/`.
-  - Tests mirror the structure of `lib/` in `spec/`.
-- **Error handling:**
-  - Parsing errors are handled within each type's implementation. See `lib/value.rb` and `lib/type.rb` for error propagation patterns.
-- **External dependencies:**
-  - Only standard Ruby gems and RSpec are used. No external JSON libraries.
-- **CLI:**
-  - The CLI in `bin/cli` demonstrates usage and can be extended for custom commands.
+- **Install dependencies:** `bundle install`
+- **Run CLI:** `ruby bin/cli` (input JSON via STDIN)
+- **Run tests:** `bundle exec rspec` (RSpec, see `.rspec` and `spec/spec_helper.rb`)
+- **Lint/Format:** `bundle exec rubocop` and `bundle exec rubocop -x` (see `.rubocop.yml` for custom rules)
+- **Run API server:** `rackup api_sinatra/config.ru -p 8000` (Sinatra, port 8000)
+- **Test API endpoints:** Use `.rest` files in `testdata/` with VS Code REST Client extension.
 
-## Integration Points
+### Project-Specific Conventions
 
-- **Extending parser:**
-  - Add new types by creating a new file in `lib/` and a matching spec in `spec/`.
-  - Update `lib/json.rb` to integrate new types.
-- **Debugging:**
-  - Use RSpec for test-driven debugging. Add failing specs to reproduce issues.
+- **Parsing:** All parsing is done via explicit state machines. Each type has a `Mode` enum and a `parse` method. See `lib/array.rb`, `lib/object.rb`, etc.
+- **Error Handling:** Syntax errors raise `SyntaxError` with descriptive messages. See RSpec tests for expected error cases.
+- **Type System:** Types are defined in `lib/type.rb` and used throughout the parser for consistency.
+- **Linting:** RuboCop is configured with custom rules; metrics cops are mostly disabled except for style and security.
+- **Testing:** RSpec is used; tests are organized by type/component. See `spec/` for examples.
+- **API:** The Sinatra API uses Ruby's built-in `JSON.parse`, not the custom parser. The CLI uses the custom parser.
 
-## Examples
+### Integration Points & External Dependencies
 
-- To parse a JSON string, see usage in `spec/json_spec.rb`.
-- To add a new JSON type, follow the pattern in `lib/array.rb` and `spec/array_spec.rb`.
+- **Gems:** See `Gemfile` for dependencies (Sinatra, RSpec, RuboCop).
+- **VS Code Extensions:** Recommended: Ruby LSP, REST Client, Sorbet (see `.vscode/extensions.json`).
+- **CI:** GitHub Actions workflow in `.github/workflows/ci.yml` runs tests on Ruby 3.4.5.
+
+### Examples
+
+- **Parsing a JSON string:**
+  ```ruby
+  result = JSON.parse('{"a":1}')
+  # => { skip: ..., token: { type: JSON::Type::OBJECT, members: [...] } }
+  ```
+- **Testing an array:** See `spec/array_spec.rb` for RSpec examples.
+- **API request:** See `testdata/all.rest` for a sample POST request.
+
+### Notes
+
+- **Test coverage:** SimpleCov is not supported due to Ruby 3.4.5 issues.
+- **API and CLI use different parsers.**
 
 ---
 
-For more details, see the [README.md](../README.md).
+If any section is unclear or missing, please provide feedback for further refinement.

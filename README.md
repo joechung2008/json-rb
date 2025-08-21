@@ -60,7 +60,25 @@ See: https://github.com/rubygems/rubygems/issues/8927
 Start the Sinatra-based API server:
 
 ```sh
-rackup api_sinatra/config.ru
+rackup api_sinatra/config.ru -p 8000
 ```
 
-The API will be available at [http://localhost:4567](http://localhost:4567) by default.
+The API will be available at [http://localhost:8000](http://localhost:8000) by default.
+
+## Test API endpoints with REST Client (VS Code Extension)
+
+You can use the [REST Client extension](https://marketplace.visualstudio.com/items?itemName=humao.rest-client) in VS Code to send requests to the API servers.
+
+1. Create a `.rest` file (see `testdata/` for examples).
+2. Add a request, for example:
+
+```http
+POST http://localhost:8000/api/v1/parse
+Content-Type: application/json
+
+{
+  "foo": "bar"
+}
+```
+
+3. Click "Send Request" above the request in VS Code to see the response.

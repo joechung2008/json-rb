@@ -2,16 +2,16 @@
 
 source "https://rubygems.org"
 
-gem "sinatra"
+gem "sinatra", "~> 4.1"
 gem "webrick", "~> 1.9"
 
 # For testing
 group :development, :test do
   gem "rspec"
+  gem "rubocop-rspec", require: false
 end
 
 # For linting
 group :development do
   gem "rubocop", require: false
-  gem "rubocop-rspec", require: false
 end
