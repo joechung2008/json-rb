@@ -2,10 +2,14 @@
 
 require_relative '../lib/json'
 
-RSpec.describe 'JSON.parse string' do
+RSpec.describe 'JSON::String' do
   it 'parses a simple string' do
     result = JSON.parse('"hello"')
-    expect(result[:token][:type]).to eq(JSON::Type::String)
+    expect(result[:token][:type]).to eq(JSON::Type::STRING)
+  end
+
+  it 'parses a simple string value' do
+    result = JSON.parse('"hello"')
     expect(result[:token][:value]).to eq('hello')
   end
 

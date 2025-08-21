@@ -3,51 +3,51 @@ require_relative "type"
 module JSON
   module String
     module Mode
-      Scanning = 0
-      Char = 1
-      EscapedChar = 2
-      Unicode = 3
-      End = 4
+      SCANNING = 0
+      CHAR = 1
+      ESCAPED_CHAR = 2
+      UNICODE = 3
+      STOP = 4
     end
 
     def parse(string)
-      mode = Mode::Scanning
+      mode = Mode::SCANNING
       pos = 0
-      token = { type: JSON::Type::String, value: nil }
+      token = { type: JSON::Type::STRING, value: nil }
 
-      while pos < string.length and mode != Mode::End
+      while pos < string.length and mode != Mode::STOP
         ch = string[pos]
 
         case mode
-        when Mode::Scanning
+        when Mode::SCANNING
           if /[ \n\r\t]/.match?(ch)
             pos += 1
           elsif ch == '"'
             token[:value] = ""
             pos += 1
-            mode = Mode::Char
+            mode = Mode::CHAR
           else
             raise SyntaxError, "expected '\"', actual '#{ch}'"
           end
-        when Mode::Char
+        when Mode::CHAR
           if ch == "\\"
             pos += 1
-            mode = Mode::EscapedChar
+            mode = Mode::ESCAPED_CHAR
           elsif ch == '"'
             pos += 1
-            mode = Mode::End
+            mode = Mode::STOP
           elsif ch != '\n' and ch != '\r'
             token[:value] += ch
             pos += 1
           else
             raise SyntaxError, "unexpected character '#{ch}'"
           end
-        when Mode::EscapedChar
+        when Mode::ESCAPED_CHAR
           case ch
           when '"', "\\", "/"
             token[:value] += ch
             pos += 1
-            mode = Mode::Char
+            mode = Mode::CHAR
           when "b", "f", "n", "r", "t"
             token[:value] +=
               case ch
@@ -58,14 +58,14 @@ module JSON
               when "t" then '\t'
               end
             pos += 1
-            mode = Mode::Char
+            mode = Mode::CHAR
           when "u"
             pos += 1
-            mode = Mode::Unicode
+            mode = Mode::UNICODE
           else
             raise SyntaxError, "unexpected escape character '#{ch}'"
           end
-        when Mode::Unicode
+        when Mode::UNICODE
           slice = string[pos..pos + 4]
           begin
             hex = Integer("0x#{slice}")
@@ -75,8 +75,8 @@ module JSON
           token[:value] += hex.chr
           pos += 4
           mode = Mode::Char
-        when Mode::End
-
+        when Mode::STOP
+          # This should not happen, as we should have exited the loop
         else
           raise SyntaxError, "unexpected mode #{mode}"
         end

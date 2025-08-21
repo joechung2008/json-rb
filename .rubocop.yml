@@ -1,10 +1,11 @@
 # RuboCop configuration file
 
-AllCops:
-  TargetRubyVersion: 3.4
-  NewCops: enable
+require:
+  - rubocop-rspec
 
-# Enable formatting cops for spec/**/*, disable linting cops for spec/**/*
+AllCops:
+  NewCops: enable
+  TargetRubyVersion: 3.4
 
 Layout/LineLength:
   Max: 120
@@ -13,7 +14,6 @@ Metrics/BlockLength:
   Exclude:
     - "spec/**/*"
 
-# Only enable formatting cops for spec files
 Layout:
   Include:
     - "spec/**/*"
@@ -29,17 +29,35 @@ Lint:
     - "spec/**/*"
   Enabled: true
 
-Metrics:
-  Exclude:
-    - "spec/**/*"
-  Enabled: true
-
 Naming:
   Exclude:
     - "spec/**/*"
   Enabled: true
 
 Security:
+  Exclude:
+    - "spec/**/*"
+  Enabled: true
+
+Metrics/AbcSize:
+  Enabled: false
+
+Metrics/BlockNesting:
+  Enabled: false
+
+Metrics/CyclomaticComplexity:
+  Enabled: false
+
+Metrics/MethodLength:
+  Enabled: false
+
+Metrics/ModuleLength:
+  Enabled: false
+
+Metrics/PerceivedComplexity:
+  Enabled: false
+
+Metrics:
   Exclude:
     - "spec/**/*"
   Enabled: true

@@ -3,119 +3,119 @@ require_relative "type"
 module JSON
   module Number
     module Mode
-      Scanning = 0
-      Characteristic = 1
-      CharacteristicDigit = 2
-      DecimalPoint = 3
-      Mantissa = 4
-      Exponent = 5
-      ExponentSign = 6
-      ExponentFirstDigit = 7
-      ExponentDigits = 8
-      End = 9
+      SCANNING = 0
+      CHARACTERISTIC = 1
+      CHARACTERISTIC_DIGIT = 2
+      DECIMAL_POINT = 3
+      MANTISSA = 4
+      EXPONENT = 5
+      EXPONENT_SIGN = 6
+      EXPONENT_FIRST_DIGIT = 7
+      EXPONENT_DIGITS = 8
+      STOP = 9
     end
 
     def parse(number, delimiters = nil)
-      mode = Mode::Scanning
+      mode = Mode::SCANNING
       pos = 0
-      token = { type: JSON::Type::Number, value: nil, value_as_string: nil }
+      token = { type: JSON::Type::NUMBER, value: nil, value_as_string: nil }
 
-      while pos < number.length and mode != Mode::End
+      while pos < number.length and mode != Mode::STOP
         ch = number[pos]
 
         case mode
-        when Mode::Scanning
+        when Mode::SCANNING
           if /[ \n\r\t]/.match?(ch)
             pos += 1
           elsif ch == "-"
             pos += 1
             token[:value_as_string] = "-"
-            mode = Mode::Characteristic
+            mode = Mode::CHARACTERISTIC
           else
             token[:value_as_string] = ""
-            mode = Mode::Characteristic
+            mode = Mode::CHARACTERISTIC
           end
-        when Mode::Characteristic
+        when Mode::CHARACTERISTIC
           if ch == "0"
             pos += 1
             token[:value_as_string] += ch
-            mode = Mode::DecimalPoint
+            mode = Mode::DECIMAL_POINT
           elsif /[1-9]/.match?(ch)
             pos += 1
             token[:value_as_string] += ch
-            mode = Mode::CharacteristicDigit
+            mode = Mode::CHARACTERISTIC_DIGIT
           else
             raise SyntaxError, "expected digit, actual '#{ch}'"
           end
-        when Mode::CharacteristicDigit
+        when Mode::CHARACTERISTIC_DIGIT
           if /\d/.match?(ch)
             pos += 1
             token[:value_as_string] += ch
           elsif !delimiters.nil? and delimiters.match(ch)
-            mode = Mode::End
+            mode = Mode::STOP
           else
-            mode = Mode::DecimalPoint
+            mode = Mode::DECIMAL_POINT
           end
-        when Mode::DecimalPoint
+        when Mode::DECIMAL_POINT
           if ch == "."
             pos += 1
             token[:value_as_string] += ch
-            mode = Mode::Mantissa
+            mode = Mode::MANTISSA
           elsif !delimiters.nil? and delimiters.match(ch)
-            mode = Mode::End
+            mode = Mode::STOP
           else
-            mode = Mode::Exponent
+            mode = Mode::EXPONENT
           end
-        when Mode::Mantissa
+        when Mode::MANTISSA
           if /\d/.match?(ch)
             pos += 1
             token[:value_as_string] += ch
           elsif /e/i.match?(ch)
-            mode = Mode::Exponent
+            mode = Mode::EXPONENT
           elsif !delimiters.nil? and delimiters.match(ch)
-            mode = Mode::End
+            mode = Mode::STOP
           else
             raise SyntaxError, "unexpected character '#{ch}'"
           end
-        when Mode::Exponent
+        when Mode::EXPONENT
           if /e/i.match?(ch)
             pos += 1
             token[:value_as_string] += "e"
-            mode = Mode::ExponentSign
+            mode = Mode::EXPONENT_SIGN
           else
             raise SyntaxError, "expected 'e' or 'E', actual '#{ch}'"
           end
-        when Mode::ExponentSign
+        when Mode::EXPONENT_SIGN
           if ch == "+" or ch == "-"
             pos += 1
             token[:value_as_string] += ch
           end
-          mode = Mode::ExponentFirstDigit
-        when Mode::ExponentFirstDigit
+          mode = Mode::EXPONENT_FIRST_DIGIT
+        when Mode::EXPONENT_FIRST_DIGIT
           if /\d/.match?(ch)
             pos += 1
             token[:value_as_string] += ch
-            mode = Mode::ExponentDigits
+            mode = Mode::EXPONENT_DIGITS
           else
             raise SyntaxError, "expected digit, actual '#{ch}'"
           end
-        when Mode::ExponentDigits
+        when Mode::EXPONENT_DIGITS
           if /\d/.match?(ch)
             pos += 1
             token[:value_as_string] += ch
           elsif !delimiters.nil? and delimiters.match(ch)
-            mode = Mode::End
+            mode = Mode::STOP
           else
             raise SyntaxError, "expected digit, actual '#{ch}'"
           end
-        when Mode::End
-
+        when Mode::STOP
+          # nothing to do, we are done
         else
           raise SyntaxError, "unexpected mode #{mode}"
         end
       end
 
-      if mode == Mode::Characteristic or mode == Mode::ExponentFirstDigit
+      if mode == Mode::CHARACTERISTIC or mode == Mode::EXPONENT_FIRST_DIGIT
         raise SyntaxError, "incomplete expression, mode #{mode}"
       else
         token[:value] = Float(token[:value_as_string])

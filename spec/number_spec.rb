@@ -2,10 +2,14 @@
 
 require_relative '../lib/json'
 
-RSpec.describe 'JSON.parse number' do
+RSpec.describe 'JSON::Number' do
   it 'parses an integer' do
     result = JSON.parse('42')
-    expect(result[:token][:type]).to eq(JSON::Type::Number)
+    expect(result[:token][:type]).to eq(JSON::Type::NUMBER)
+  end
+
+  it 'parses an integer value' do
+    result = JSON.parse('42')
     expect(result[:token][:value]).to eq(42)
   end
 
@@ -29,7 +33,7 @@ RSpec.describe 'JSON.parse number' do
     expect(result[:token][:value]).to eq(6.02e23)
   end
 
-  it 'parses negative exponent' do
+  it 'parses negative EXPONENT' do
     result = JSON.parse('1.23e-4')
     expect(result[:token][:value]).to eq(1.23e-4)
   end

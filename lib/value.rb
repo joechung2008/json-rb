@@ -7,96 +7,96 @@ require_relative "type"
 module JSON
   module Value
     module Mode
-      Scanning = 0
-      Array = 1
-      False = 2
-      Null = 3
-      Number = 4
-      Object = 5
-      String = 6
-      True = 7
-      End = 8
+      SCANNING = 0
+      ARRAY = 1
+      FALSE = 2
+      NULL = 3
+      NUMBER = 4
+      OBJECT = 5
+      STRING = 6
+      TRUE = 7
+      STOP = 8
     end
 
     def parse(value, delimiters = nil)
-      mode = Mode::Scanning
+      mode = Mode::SCANNING
       pos = 0
 
-      while pos < value.length and mode != Mode::End
+      while pos < value.length and mode != Mode::STOP
         ch = value[pos]
 
         case mode
-        when Mode::Scanning
+        when Mode::SCANNING
           if /[ \n\r\t]/.match?(ch)
             pos += 1
           elsif ch == "["
-            mode = Mode::Array
+            mode = Mode::ARRAY
           elsif ch == "f"
-            mode = Mode::False
+            mode = Mode::FALSE
           elsif ch == "n"
-            mode = Mode::Null
+            mode = Mode::NULL
           elsif /[-\d]/.match?(ch)
-            mode = Mode::Number
+            mode = Mode::NUMBER
           elsif ch == "{"
-            mode = Mode::Object
+            mode = Mode::OBJECT
           elsif ch == '"'
-            mode = Mode::String
+            mode = Mode::STRING
           elsif ch == "t"
-            mode = Mode::True
+            mode = Mode::TRUE
           elsif !delimiters.nil? and delimiters.match(ch)
-            mode = Mode::End
+            mode = Mode::STOP
           else
             raise SyntaxError, "unexpected character '#{ch}'"
           end
-        when Mode::Array
+        when Mode::ARRAY
           slice = value[pos..-1]
           skip, token = JSON::Array.parse(slice).values_at(:skip, :token)
           pos += skip
-          mode = Mode::End
-        when Mode::False
+          mode = Mode::STOP
+        when Mode::FALSE
           slice = value[pos..-1]
           if /^false/i.match?(slice)
-            token = { type: JSON::Type::False, value: false }
+            token = { type: JSON::Type::FALSE, value: false }
             pos += 5
-            mode = Mode::End
+            mode = Mode::STOP
           else
             raise SyntaxError, "expected 'false', actual '#{slice}'"
           end
-        when Mode::Null
+        when Mode::NULL
           slice = value[pos..-1]
           if /^null/i.match?(slice)
-            token = { type: JSON::Type::Null, value: nil }
+            token = { type: JSON::Type::NULL, value: nil }
             pos += 4
-            mode = Mode::End
+            mode = Mode::STOP
           else
             raise SyntaxError, "expected 'null', actual '#{slice}'"
           end
-        when Mode::Number
+        when Mode::NUMBER
           slice = value[pos..-1]
           skip, token = JSON::Number.parse(slice, delimiters.nil? ? /\s/ : delimiters).values_at(:skip, :token)
           pos += skip
-          mode = Mode::End
-        when Mode::Object
+          mode = Mode::STOP
+        when Mode::OBJECT
           slice = value[pos..-1]
           skip, token = JSON::Object.parse(slice).values_at(:skip, :token)
           pos += skip
-          mode = Mode::End
-        when Mode::String
+          mode = Mode::STOP
+        when Mode::STRING
           slice = value[pos..-1]
           skip, token = JSON::String.parse(slice).values_at(:skip, :token)
           pos += skip
-          mode = Mode::End
-        when Mode::True
+          mode = Mode::STOP
+        when Mode::TRUE
           slice = value[pos..-1]
           if /^true/i.match?(slice)
-            token = { type: JSON::Type::True, value: true }
+            token = { type: JSON::Type::TRUE, value: true }
             pos += 4
-            mode = Mode::End
+            mode = Mode::STOP
           else
             raise SyntaxError, "expected 'true', actual '#{slice}'"
           end
-        when Mode::End
-
+        when Mode::STOP
+          # do nothing, we are done
         else
           raise SyntaxError, "unexpected mode #{mode}"
         end

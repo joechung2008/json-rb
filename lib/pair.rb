@@ -5,51 +5,51 @@ require_relative "value"
 module JSON
   module Pair
     module Mode
-      Scanning = 0
-      Key = 1
-      Colon = 2
-      Value = 3
-      End = 4
+      SCANNING = 0
+      KEY = 1
+      COLON = 2
+      VALUE = 3
+      STOP = 4
     end
 
     def parse(pair, delimiters = nil)
-      mode = Mode::Scanning
+      mode = Mode::SCANNING
       pos = 0
-      token = { type: JSON::Type::Pair, key: nil, value: nil }
+      token = { type: JSON::Type::PAIR, key: nil, value: nil }
 
-      while pos < pair.length and mode != Mode::End
+      while pos < pair.length and mode != Mode::STOP
         ch = pair[pos]
 
         case mode
-        when Mode::Scanning
+        when Mode::SCANNING
           if /[ \n\r\t]/.match?(ch)
             pos += 1
           else
-            mode = Mode::Key
+            mode = Mode::KEY
           end
-        when Mode::Key
+        when Mode::KEY
           slice = pair[pos..-1]
           skip, key = JSON::String.parse(slice).values_at(:skip, :token)
           token[:key] = key
           pos += skip
-          mode = Mode::Colon
-        when Mode::Colon
+          mode = Mode::COLON
+        when Mode::COLON
           if /[ \n\r\t]/.match?(ch)
             pos += 1
           elsif ch == ":"
             pos += 1
-            mode = Mode::Value
+            mode = Mode::VALUE
           else
             raise SyntaxError, "expected ':', actual '#{ch}'"
           end
-        when Mode::Value
+        when Mode::VALUE
           slice = pair[pos..-1]
           skip, value = JSON::Value.parse(slice, delimiters).values_at(:skip, :token)
           token[:value] = value
           pos += skip
-          mode = Mode::End
-        when Mode::End
-
+          mode = Mode::STOP
+        when Mode::STOP
+          # Do nothing, we are done parsing
         else
           raise SyntaxError, "unexpected mode #{mode}"
         end

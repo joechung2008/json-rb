@@ -53,6 +53,9 @@ GEM
     rubocop-ast (1.46.0)
       parser (>= 3.3.7.2)
       prism (~> 1.4)
+    rubocop-rspec (3.6.0)
+      lint_roller (~> 1.1)
+      rubocop (~> 1.72, >= 1.72.1)
     ruby-progressbar (1.13.0)
     ruby2_keywords (0.0.5)
     sinatra (4.1.1)
@@ -66,6 +69,7 @@ GEM
     unicode-display_width (3.1.5)
       unicode-emoji (~> 4.0, >= 4.0.4)
     unicode-emoji (4.0.4)
+    webrick (1.9.1)
 
 PLATFORMS
   x64-mingw-ucrt
@@ -73,7 +77,9 @@ PLATFORMS
 DEPENDENCIES
   rspec
   rubocop
+  rubocop-rspec
   sinatra
+  webrick (~> 1.9)
 
 BUNDLED WITH
    2.6.9

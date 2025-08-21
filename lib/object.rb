@@ -1,35 +1,34 @@
-require_relative "pair"
+require_relative "PAIR"
 require_relative "type"
 
 module JSON
   module Object
     module Mode
-      Scanning = 0
-      LeftBrace = 1
-      Pair = 2
-      Delimiter = 3
-      End = 4
+      SCANNING = 0
+      PAIR = 1
+      DELIMITER = 2
+      STOP = 3
     end
 
     def parse(object)
-      mode = Mode::Scanning
+      mode = Mode::SCANNING
       pos = 0
-      token = { type: JSON::Type::Object, members: [] }
+      token = { type: JSON::Type::OBJECT, members: [] }
 
-      while pos < object.length and mode != Mode::End
+      while pos < object.length and mode != Mode::STOP
         ch = object[pos]
 
         case mode
-        when Mode::Scanning
+        when Mode::SCANNING
           if /[ \n\r\t]/.match?(ch)
             pos += 1
           elsif ch == "{"
             pos += 1
-            mode = Mode::Pair
+            mode = Mode::PAIR
           else
             raise SyntaxError, "expected '{', actual '#{ch}'"
           end
-        when Mode::Pair
+        when Mode::PAIR
           if /[ \n\r\t]/.match?(ch)
             pos += 1
           elsif ch == "}"
@@ -38,28 +37,28 @@ module JSON
             end
 
             pos += 1
-            mode = Mode::End
+            mode = Mode::STOP
           else
             slice = object[pos..-1]
             skip, pair = JSON::Pair.parse(slice, /[\s,\}]/).values_at(:skip, :token)
             token[:members].push(pair)
             pos += skip
-            mode = Mode::Delimiter
+            mode = Mode::DELIMITER
           end
-        when Mode::Delimiter
+        when Mode::DELIMITER
           if /[ \n\r\t]/.match?(ch)
             pos += 1
           elsif ch == ","
             pos += 1
-            mode = Mode::Pair
+            mode = Mode::PAIR
           elsif ch == "}"
             pos += 1
-            mode = Mode::End
+            mode = Mode::STOP
           else
             raise SyntaxError, "expected ',' or '}', actual '#{ch}'"
           end
-        when Mode::End
-
+        when Mode::STOP
+          # do nothing, we are done
         else
           raise SyntaxError, "unexpected mode %{mode}"
         end

@@ -2,32 +2,32 @@ require_relative "value"
 
 module JSON
   module Mode
-    Scanning = 0
-    Value = 1
-    End = 2
+    SCANNING = 0
+    VALUE = 1
+    STOP = 2
   end
 
   def parse(json)
-    mode = Mode::Scanning
+    mode = Mode::SCANNING
     pos = 0
 
-    while pos < json.length and mode != Mode::End
+    while pos < json.length and mode != Mode::STOP
       ch = json[pos]
 
       case mode
-      when Mode::Scanning
+      when Mode::SCANNING
         if /\s/.match?(ch)
           pos += 1
         else
-          mode = Mode::Value
+          mode = Mode::VALUE
         end
-      when Mode::Value
+      when Mode::VALUE
         slice = json[pos..-1]
         skip, token = JSON::Value.parse(slice).values_at(:skip, :token)
         pos += skip
-        mode = Mode::End
-      when Mode::End
-
+        mode = Mode::STOP
+      when Mode::STOP
+        # If we reach here, it means we have already parsed the value
       else
         raise SyntaxError, "unexpected mode #{mode}"
       end
