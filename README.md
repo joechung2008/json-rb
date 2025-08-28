@@ -81,6 +81,8 @@ Start the Grape-based API server:
 rackup api_grape/config.ru -p 8000 -s webrick
 ```
 
+Note: This project is unable to update Grape to 2.4.0 due to its regression in text/plain request handling.
+
 ## Test API endpoints with REST Client (VS Code Extension)
 
 You can use the [REST Client extension](https://marketplace.visualstudio.com/items?itemName=humao.rest-client) in VS Code to send requests to the API servers.
