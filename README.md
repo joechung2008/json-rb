@@ -62,7 +62,7 @@ Start the Sinatra-based API server:
 The API will be available at [http://localhost:8000](http://localhost:8000).
 
 ```sh
-rackup api_sinatra/config.ru -p 8000 -s webrick
+bundle exec rackup api_sinatra/config.ru -p 8000 -s webrick
 ```
 
 ## Run the Roda API
@@ -70,7 +70,7 @@ rackup api_sinatra/config.ru -p 8000 -s webrick
 Start the Roda-based API server:
 
 ```sh
-rackup api_roda/config.ru -p 8000 -s webrick
+bundle exec rackup api_roda/config.ru -p 8000 -s webrick
 ```
 
 ## Run the Grape API
@@ -78,10 +78,8 @@ rackup api_roda/config.ru -p 8000 -s webrick
 Start the Grape-based API server:
 
 ```sh
-rackup api_grape/config.ru -p 8000 -s webrick
+bundle exec rackup api_grape/config.ru -p 8000 -s webrick
 ```
-
-Note: This project is unable to update Grape to 2.4.0 due to its regression in text/plain request handling.
 
 ## Test API endpoints with REST Client (VS Code Extension)
 

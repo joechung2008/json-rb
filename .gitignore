@@ -1,1 +1,32 @@
-coverage/
+# Bundler
+.bundle
+
+# Test
+coverage
+
+# macOS
+.DS_Store
+
+# Logs
+*.log
+
+# Temp
+tmp/
+log/
+
+# Environment
+.env*
+
+# Debugger
+.byebug_history
+
+# Vendor
+vendor/bundle
+
+# Docs
+doc/
+.yardoc
+
+# IDEs
+.vscode
+!.vscode/extensions.json

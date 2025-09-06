@@ -15,8 +15,8 @@ class ParseAPI < Grape::API
       end
       post :parse do
         begin
-          raw_text = env['rack.input'].read
-          # raw_text = env['raw.body']
+          # Use raw_body_saver middleware to access raw body
+          raw_text = env['raw.body']
           result = JSONParser.parse(raw_text)
           status 200
           result
