@@ -4,7 +4,7 @@
 
 ### Project Overview
 
-- This is a Ruby implementation of a JSON parser, ported from TypeScript. It includes a CLI, a Sinatra-based API, and a modular parser in `lib/`.
+- This is a Ruby implementation of a JSON parser, ported from TypeScript. It includes a CLI, Grape-based API, Rails-based API, Roda-based API, Sinatra-based API, and a modular parser in `lib/`.
 - The parser is custom and does not use Ruby's built-in `JSON` for parsing; see `lib/json.rb` and related files for the core logic.
 
 ### Architecture & Major Components
@@ -13,50 +13,37 @@
   - Parsing is state-machine driven, with explicit modes for each JSON type.
   - Each type (array, object, string, number, etc.) has its own module and parse method.
 - **bin/cli**: Command-line interface. Reads from STDIN, parses input, prints results.
-- **api_sinatra/**: Sinatra API exposing `/api/v1/parse` endpoint. Uses Ruby's built-in `JSONParser.parse` (not the custom parser) for requests.
+- **api_grape/**: Grape API exposing `/api/v1/parse` endpoint. Uses the custom JSON parser for requests.
+- **api_rails/**: Rails API exposing `/api/v1/parse` endpoint. Uses the custom JSON parser for requests. Minimal Rails 7.2.2 API-only app with security scanning via Brakeman.
+- **api_roda/**: Roda API exposing `/api/v1/parse` endpoint. Uses the custom JSON parser for requests.
+- **api_sinatra/**: Sinatra API exposing `/api/v1/parse` endpoint. Uses the custom JSON parser for requests.
 - **spec/**: RSpec tests for all parser components. Use as reference for expected behaviors and edge cases.
 - **testdata/**: Example REST requests for API testing (compatible with VS Code REST Client extension).
 
 ### Developer Workflows
 
-- **Install dependencies:** `bundle install`
-- **Run CLI:** `ruby bin/cli` (input JSON via STDIN)
-- **Run tests:** `bundle exec rspec` (RSpec, see `.rspec` and `spec/spec_helper.rb`)
-- **Lint/Format:** `bundle exec rubocop` and `bundle exec rubocop -x` (see `.rubocop.yml` for custom rules)
-- **Run API server:** `rackup api_sinatra/config.ru -p 8000 -s webrick` (Sinatra, port 8000)
-- **Run Roda API server:** `rackup api_roda/config.ru -p 8000 -s webrick` (Roda, port 8000)
-- **Run Grape API server:** `rackup api_grape/config.ru -p 8000 -s webrick` (Grape, port 8000)
-- **Test API endpoints:** Use `.rest` files in `testdata/` with VS Code REST Client extension.
+See [README.md](../README.md) for detailed developer workflows and setup instructions.
 
 ### Project-Specific Conventions
 
-- **Parsing:** All parsing is done via explicit state machines. Each type has a `Mode` enum and a `parse` method. See `lib/array.rb`, `lib/object.rb`, etc.
+- **API:** All APIs (Sinatra, Rails, Grape, Roda) and the CLI use the custom `JSONParser.parse` for parsing JSON requests.
 - **Error Handling:** Syntax errors raise `SyntaxError` with descriptive messages. See RSpec tests for expected error cases.
-- **Type System:** Types are defined in `lib/type.rb` and used throughout the parser for consistency.
 - **Linting:** RuboCop is configured with custom rules; metrics cops are mostly disabled except for style and security.
+- **Parsing:** All parsing is done via explicit state machines. Each type has a `Mode` enum and a `parse` method. See `lib/array.rb`, `lib/object.rb`, etc.
 - **Testing:** RSpec is used; tests are organized by type/component. See `spec/` for examples.
-- **API:** The Sinatra API uses Ruby's built-in `JSONParser.parse`, not the custom parser. The CLI uses the custom parser.
+- **Type System:** Types are defined in `lib/type.rb` and used throughout the parser for consistency.
 
 ### Integration Points & External Dependencies
 
-- **Gems:** See `Gemfile` for dependencies (Sinatra, RSpec, RuboCop).
-- **VS Code Extensions:** Recommended: Ruby LSP, REST Client, Sorbet (see `.vscode/extensions.json`).
-- **CI:** GitHub Actions workflow in `.github/workflows/ci.yml` runs tests on Ruby 3.4.5.
-
-### Examples
-
-- **Parsing a JSON string:**
-  ```ruby
-  result = JSONParser.parse('{"a":1}')
-  # => { skip: ..., token: { type: JSONParser::Type::OBJECT, members: [...] } }
-  ```
-- **Testing an array:** See `spec/array_spec.rb` for RSpec examples.
-- **API request:** See `testdata/all.rest` for a sample POST request.
+- **CI:** GitHub Actions workflows in `.github/workflows/ci.yml` (main project tests on Ruby 3.4.5) and `.github/workflows/rails-ci.yml` (Rails API security scanning, linting, and health checks). Dependabot configured in `.github/dependabot.yml` for automated dependency updates.
+- **Gems:** See `Gemfile` for dependencies (Sinatra, Grape, Roda, Puma, Rack, Rackup, Webrick, RSpec, RuboCop). Rails API uses Rails 7.2.2 with Brakeman for security scanning.
+- **VS Code Extensions:** Recommended: Ruby Extensions Pack, Ruby LSP, Sorbet, REST Client (see `.vscode/extensions.json`).
 
 ### Notes
 
+- **API and CLI use the same parser:** All APIs (Sinatra, Rails, Grape, Roda) and the CLI use the custom JSON parser.
+- **Rails API:** Minimal API-only Rails 7.2.2 app. Uses Brakeman for security scanning and RuboCop with Rails-specific rules.
 - **Test coverage:** SimpleCov is not supported due to Ruby 3.4.5 issues.
-- **API and CLI use different parsers.**
 
 ---
 
