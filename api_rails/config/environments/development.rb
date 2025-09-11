@@ -37,9 +37,6 @@ Rails.application.configure do
   # Tell Active Support which deprecation messages to disallow.
   config.active_support.disallowed_deprecation_warnings = []
 
-  # Highlight code that enqueued background job in logs.
-  # config.active_job.verbose_enqueue_logs = true  # Commented out since Active Job is not used
-
   # Raise error when a before_action's only/except options reference missing actions.
   config.action_controller.raise_on_missing_callback_actions = true
 

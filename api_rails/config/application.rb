@@ -1,12 +1,6 @@
 require_relative "boot"
 
-# Require JSON before other Rails components
-require "json"
-
-# Require only the Rails components needed for API without database
-require "active_support"
-require "active_support/core_ext/integer/time"
-require "active_support/core_ext/numeric/time"
+require "rails"
 require "active_model/railtie"
 require "action_controller/railtie"
 
