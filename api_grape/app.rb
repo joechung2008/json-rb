@@ -1,4 +1,4 @@
-require_relative '../lib/json'
+require_relative '../lib/json_rb'
 require 'json'
 require 'grape'
 

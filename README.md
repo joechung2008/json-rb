@@ -55,15 +55,27 @@ bundle exec rspec
 **Note:** This project is unable to use SimpleCov for test coverage reporting due to a known issue with `JSON.dump` in Ruby 3.4.5.  
 See: https://github.com/rubygems/rubygems/issues/8927
 
-## Run the Sinatra API
+## Build the Gem Locally
 
-Start the Sinatra-based API server:
-
-The API will be available at [http://localhost:8000](http://localhost:8000).
+To build the `json-rb` gem locally for use in other projects without publishing:
 
 ```sh
-bundle exec rackup api_sinatra/config.ru -p 8000 -s webrick
+mkdir -p pkg && gem build json_rb.gemspec --output pkg/json_rb-0.1.0.gem
 ```
+
+This creates a `json_rb-0.1.0.gem` file in the `pkg/` directory.
+
+## Run the Grape API
+
+Start the Grape-based API server:
+
+```sh
+bundle exec rackup api_grape/config.ru -p 8000 -s webrick
+```
+
+## Run the Rails API
+
+See [api_rails/README.md](api_rails/README.md) for instructions on how to run the Rails API.
 
 ## Run the Roda API
 
@@ -73,12 +85,14 @@ Start the Roda-based API server:
 bundle exec rackup api_roda/config.ru -p 8000 -s webrick
 ```
 
-## Run the Grape API
+## Run the Sinatra API
 
-Start the Grape-based API server:
+Start the Sinatra-based API server:
+
+The API will be available at [http://localhost:8000](http://localhost:8000).
 
 ```sh
-bundle exec rackup api_grape/config.ru -p 8000 -s webrick
+bundle exec rackup api_sinatra/config.ru -p 8000 -s webrick
 ```
 
 ## Test API endpoints with REST Client (VS Code Extension)

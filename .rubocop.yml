@@ -6,6 +6,8 @@ plugins:
 AllCops:
   NewCops: enable
   TargetRubyVersion: 3.4
+  Exclude:
+    - "api_rails/**/*"  # Exclude Rails directory from root RuboCop runs
 
 Layout/LineLength:
   Max: 120

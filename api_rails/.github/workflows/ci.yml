@@ -1,0 +1,64 @@
+name: API Rails CI
+
+on:
+  pull_request:
+    paths:
+      - 'api_rails/**'
+  push:
+    branches: [main]
+    paths:
+      - 'api_rails/**'
+
+jobs:
+  scan_ruby:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: api_rails/.ruby-version
+          bundler-cache: true
+          working-directory: api_rails
+
+      - name: Scan for common Rails security vulnerabilities using static analysis
+        run: bin/brakeman --no-pager
+        working-directory: api_rails
+
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: api_rails/.ruby-version
+          bundler-cache: true
+          working-directory: api_rails
+
+      - name: Lint code for consistent style
+        run: bin/rubocop -f github
+        working-directory: api_rails
+
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: api_rails/.ruby-version
+          bundler-cache: true
+          working-directory: api_rails
+
+      - name: Run Rails health check
+        run: bin/rails runner "puts 'Rails is working!'"
+        working-directory: api_rails

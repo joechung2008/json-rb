@@ -33,6 +33,8 @@ module JSONParser
       end
     end
 
+    raise SyntaxError, "JSON cannot be empty" if token.nil?
+
     { skip: pos, token: token }
   end
 

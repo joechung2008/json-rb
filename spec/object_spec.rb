@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative '../lib/json'
+require_relative '../lib/json_rb'
 
 RSpec.describe 'JSONParser::Object' do
   it 'parses an empty object' do

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative '../lib/json'
+require_relative '../lib/json_rb'
 
 RSpec.describe 'JSONParser::Value' do
   it 'parses a JSON array and checks type' do
@@ -87,5 +87,9 @@ RSpec.describe 'JSONParser::Value' do
 
   it 'raises error on invalid input' do
     expect { JSONParser.parse('invalid') }.to raise_error(SyntaxError)
+  end
+
+  it 'raises error on empty input' do
+    expect { JSONParser.parse('') }.to raise_error(SyntaxError, 'JSON cannot be empty')
   end
 end

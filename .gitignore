@@ -30,3 +30,6 @@ doc/
 # IDEs
 .vscode
 !.vscode/extensions.json
+
+# Built gems
+pkg/
