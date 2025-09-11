@@ -3,11 +3,11 @@ name: API Rails CI
 on:
   pull_request:
     paths:
-      - 'api_rails/**'
+      - "api_rails/**"
   push:
     branches: [main]
     paths:
-      - 'api_rails/**'
+      - "api_rails/**"
 
 jobs:
   scan_ruby:
@@ -42,7 +42,7 @@ jobs:
           working-directory: api_rails
 
       - name: Lint code for consistent style
-        run: bin/rubocop -f github
+        run: bin/rubocop --config .rubocop-rails.yml -f github
         working-directory: api_rails
 
   test:
@@ -60,5 +60,5 @@ jobs:
           working-directory: api_rails
 
       - name: Run Rails health check
-        run: bin/rails runner "puts 'Rails is working!'"
+        run: bin/rails runner "puts 'Rails is working'"
         working-directory: api_rails
