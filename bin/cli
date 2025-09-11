@@ -3,8 +3,6 @@
 require_relative '../lib/json'
 
 expression = STDIN.read
-puts expression
 
 skip, token = JSONParser.parse(expression).values_at(:skip, :token)
-puts skip
 puts token
