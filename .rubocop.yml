@@ -5,7 +5,7 @@ plugins:
 
 AllCops:
   NewCops: enable
-  TargetRubyVersion: 3.4
+  TargetRubyVersion: 3.3
   Exclude:
     - "api_rails/**/*"  # Exclude Rails directory from root RuboCop runs
 

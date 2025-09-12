@@ -76,6 +76,8 @@ GEM
     rackup (2.2.1)
       rack (>= 3)
     rainbow (3.1.1)
+    rbs (3.9.5)
+      logger
     regexp_parser (2.11.2)
     roda (3.95.0)
       rack
@@ -109,6 +111,10 @@ GEM
     rubocop-rspec (3.7.0)
       lint_roller (~> 1.1)
       rubocop (~> 1.72, >= 1.72.1)
+    ruby-lsp (0.26.1)
+      language_server-protocol (~> 3.17.0)
+      prism (>= 1.2, < 2.0)
+      rbs (>= 3, < 5)
     ruby-progressbar (1.13.0)
     ruby2_keywords (0.0.5)
     securerandom (0.4.1)
@@ -142,6 +148,7 @@ DEPENDENCIES
   rspec
   rubocop
   rubocop-rspec
+  ruby-lsp
   sinatra (~> 4.1)
   webrick (~> 1.9)
 

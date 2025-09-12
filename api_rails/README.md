@@ -1,6 +1,6 @@
 # Rails API
 
-A minimal Rails API application built with Rails 7.2.2.
+A minimal Rails API application built with Rails 8.0.2.
 
 ## Configuration
 
@@ -16,12 +16,52 @@ The application is configured as an API-only Rails app with the following key se
 
 ## Ruby Version
 
-- Ruby 3.4.5
-- Rails 7.2.2
+- Ruby 3.3.9
+- Rails 8.0.2
 
 ## System Dependencies
 
 - Bundler
+
+## Testing
+
+This Rails API uses Rails' built-in testing framework (Minitest).
+
+### Run All Tests
+
+```bash
+# Run all tests
+rails test
+
+# Run tests with verbose output
+rails test -v
+
+# Run tests in quiet mode
+rails test -q
+```
+
+### Run Specific Tests
+
+```bash
+# Run a specific test file
+rails test test/controllers/api/v1/parse_controller_test.rb
+
+# Run a specific test by line number
+rails test test/controllers/api/v1/parse_controller_test.rb:10
+
+# Run tests in a line range
+rails test test/controllers/api/v1/parse_controller_test.rb:10-20
+
+# Run all controller tests
+rails test test/controllers
+```
+
+### Test Output
+
+- 9 tests covering the parse API endpoint
+- Tests validate JSON parsing functionality
+- Tests check error handling for invalid JSON
+- All tests should pass with 0 failures and 0 errors
 
 ## Development Tools
 

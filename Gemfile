@@ -16,7 +16,8 @@ group :development, :test do
   gem "rubocop-rspec", require: false
 end
 
-# For linting
+# For linting and language server
 group :development do
   gem "rubocop", require: false
+  gem "ruby-lsp", require: false
 end

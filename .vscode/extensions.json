@@ -2,7 +2,6 @@
   "recommendations": [
     "humao.rest-client",
     "shopify.ruby-extensions-pack",
-    "shopify.ruby-lsp",
-    "sorbet.sorbet-vscode"
+    "shopify.ruby-lsp"
   ]
 }

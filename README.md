@@ -1,6 +1,6 @@
 # json.rb
 
-JSON parser ported from TypeScript to Ruby 3.4.5
+JSON parser ported from TypeScript to Ruby 3.3.9
 
 ## License
 
@@ -52,7 +52,7 @@ Run the test suite to verify your code works as expected:
 bundle exec rspec
 ```
 
-**Note:** This project is unable to use SimpleCov for test coverage reporting due to a known issue with `JSON.dump` in Ruby 3.4.5.  
+**Note:** This project is unable to use SimpleCov for test coverage reporting due to a known issue with `JSON.dump` in Ruby 3.3.9.  
 See: https://github.com/rubygems/rubygems/issues/8927
 
 ## Build the Gem Locally
