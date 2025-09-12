@@ -4,7 +4,7 @@ require "simplecov"
 SimpleCov.start "rails" do
   add_filter "/test/"
   add_filter "/vendor/"
-  
+
   track_files "app/**/*.rb"
   track_files "lib/**/*.rb"
 end
