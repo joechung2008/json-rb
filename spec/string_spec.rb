@@ -31,4 +31,21 @@ RSpec.describe 'JSONParser::String' do
   it 'raises error on missing opening quote' do
     expect { JSONParser.parse('hello"') }.to raise_error(SyntaxError)
   end
+
+  describe 'error cases' do
+    it 'raises error on invalid escape character' do
+      expect { JSONParser.parse('"hello\\x"') }
+        .to raise_error(SyntaxError, /unexpected escape character/)
+    end
+
+    it 'raises error on invalid Unicode escape' do
+      expect { JSONParser.parse('"\\uXYZ"') }
+        .to raise_error(SyntaxError, /unexpected Unicode code/)
+    end
+
+    it 'raises error on incomplete Unicode escape' do
+      expect { JSONParser.parse('"\\u123"') }
+        .to raise_error(SyntaxError, /unexpected Unicode code/)
+    end
+  end
 end

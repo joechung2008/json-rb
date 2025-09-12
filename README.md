@@ -52,8 +52,7 @@ Run the test suite to verify your code works as expected:
 bundle exec rspec
 ```
 
-**Note:** This project is unable to use SimpleCov for test coverage reporting due to a known issue with `JSON.dump` in Ruby 3.3.9.  
-See: https://github.com/rubygems/rubygems/issues/8927
+**Test Coverage:** This project uses SimpleCov for test coverage reporting. Coverage reports are generated in the `coverage/` directory and show current line coverage of 84.79%. Open `coverage/index.html` in a browser to view detailed coverage reports.
 
 ## Build the Gem Locally
 

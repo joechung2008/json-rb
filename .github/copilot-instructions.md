@@ -43,7 +43,7 @@ See [README.md](../README.md) for detailed developer workflows and setup instruc
 
 - **API and CLI use the same parser:** All APIs (Sinatra, Rails, Grape, Roda) and the CLI use the custom JSON parser.
 - **Rails API:** Minimal API-only Rails 8.0.2 app. Uses Brakeman for security scanning and RuboCop with Rails-specific rules.
-- **Test coverage:** SimpleCov is not supported due to Ruby 3.3.9 issues.
+- **Test coverage:** SimpleCov is configured for test coverage reporting with current coverage at 84.79%.
 
 ---
 

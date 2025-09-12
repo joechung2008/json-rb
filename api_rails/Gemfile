@@ -36,4 +36,7 @@ group :development, :test do
 
   # Ruby Language Server
   gem "ruby-lsp", require: false
+
+  # Code coverage analysis
+  gem "simplecov", require: false
 end

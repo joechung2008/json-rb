@@ -14,6 +14,7 @@ gem "webrick", "~> 1.9"
 group :development, :test do
   gem "rspec"
   gem "rubocop-rspec", require: false
+  gem "simplecov", require: false
 end
 
 # For linting and language server

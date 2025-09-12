@@ -28,13 +28,24 @@ jobs:
           working-directory: api_rails
 
       - name: Scan for common Rails security vulnerabilities using static analysis
-        run: bin/brakeman --no-pager
+        run: bundle exec brakeman --no-pager
         working-directory: api_rails
 
       - name: Lint code for consistent style
-        run: bin/rubocop --config .rubocop-rails.yml -f github
+        run: bundle exec rubocop --config .rubocop-rails.yml -f github
         working-directory: api_rails
 
       - name: Run Rails health check
-        run: bin/rails runner "puts 'Rails is working'"
+        run: bundle exec rails runner "puts 'Rails is working'"
         working-directory: api_rails
+
+      - name: Run tests with coverage
+        run: bundle exec rails test
+        working-directory: api_rails
+
+      - name: Upload coverage artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: rails-coverage-report
+          path: api_rails/coverage/
+          if-no-files-found: ignore

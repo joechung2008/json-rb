@@ -92,4 +92,31 @@ RSpec.describe 'JSONParser::Value' do
   it 'raises error on empty input' do
     expect { JSONParser.parse('') }.to raise_error(SyntaxError, 'JSON cannot be empty')
   end
+
+  describe 'literal value error cases' do
+    it 'raises error on malformed false literal' do
+      expect { JSONParser.parse('fals') }
+        .to raise_error(SyntaxError, /expected 'false'/)
+    end
+
+    it 'raises error on malformed true literal' do
+      expect { JSONParser.parse('tru') }
+        .to raise_error(SyntaxError, /expected 'true'/)
+    end
+
+    it 'raises error on malformed null literal' do
+      expect { JSONParser.parse('nul') }
+        .to raise_error(SyntaxError, /expected 'null'/)
+    end
+
+    it 'raises error on unexpected character' do
+      expect { JSONParser.parse('@') }
+        .to raise_error(SyntaxError, /unexpected character/)
+    end
+
+    it 'raises error on empty value' do
+      expect { JSONParser::Value.parse('') }
+        .to raise_error(SyntaxError, 'value cannot be empty')
+    end
+  end
 end
