@@ -1,0 +1,16 @@
+.git
+.gitignore
+.github/
+spec/
+coverage/
+tmp/
+.vscode/
+*.log
+.DS_Store
+.ruby-version
+.bundle/
+vendor/bundle/
+node_modules/
+*.swp
+*.swo
+*~
